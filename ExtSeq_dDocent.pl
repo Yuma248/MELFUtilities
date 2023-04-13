@@ -6,7 +6,7 @@ elsif ($_=~ /^-inV$/){$inputVCF=shift @ARGV;}
 elsif ($_=~ /^-out$/){$output=shift @ARGV;}
 }
 
-if (not defined ($inputR && $inputVCF && $output)) {print "\nThis scritp extracts sequences from a dDocent reference fasta file, according to infromation from a VCF file with your filtered SNPs.\n\nUsage: ExtSeq.pl\n\t-inR <path to reference file fron dDocent, with contig sequences>\n\t-inV <path to VCF file with SNP>\n\t-out <output fasta file name>\n\nExample:\nExtSeq.pl -inR /dDocent/reference.fasta -inV /dDocent/Filtered_SNPs.vcf -out myseq.fasta"; exit;}
+if (not defined ($inputR && $inputVCF && $output)) {print "\nThis scritp extracts sequences from a dDocent reference fasta file, according to infromation from a VCF file with your filtered SNPs.\n\nUsage: ExtSeq.pl\n\t-inR <path to reference file fron dDocent, with contig sequences>\n\t-inV <path to VCF file with SNP>\n\t-out <output fasta file name>\n\nExample:\nExtSeq.pl -inR /dDocent/reference.fasta -inV /dDocent/Filtered_SNPs.vcf -out myseq.fasta\n\n"; exit;}
 open (IN1, "<$inputVCF") or die "Can not open inputfile $!\n";
 print "Checking VCF file: $inputVCF \n";
 my @lines1=<IN1>;
