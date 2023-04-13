@@ -8,7 +8,7 @@ elsif ($_=~ /^-rndm$/){$outputRndm=shift @ARGV;}
 elsif ($_=~ /^-lm$/){$outputLM=shift @ARGV;}
 }
 
-if (not defined ($input)) {print "\nUsage: extBeFiRa.pl -inf <input vcf_file> -bq <output best quality SNP> -frt <First SNP ouput> -rndm <random SNP output> -lm <output SNP with lest missing data>\n\n"; exit;}
+if (not defined ($input)) {print "\nThis script will extract the best quality SNP, first SNP, less missing data SNP and a random SNP per contig. It is usefull when SNPs are call de novo to reduce linkage, by selecting one SNP per contig.\n\nUsage: extBQFRLMRM.pl -inf <input vcf_file> -bq <output best quality SNP,default Best.vcf> -frt <First SNP ouput, default First.vcf> -rndm <random SNP output, default Random.vcf> -lm <output SNP with lest missing data, default Lmisin.vcf>\n\nFor example:\nExtractBQFRLMRM.pl -inf /my/input.vcf -bq /my/bestSNP.vcf -frt /my/firstSNP.vcf -rndm /my/randomSNP.vcf -lm /my/lessmissingSNP.vcf\n\n"; exit;}
 if (not defined ($outputBQ)) {$outputBQ="Best.vcf"}; 
 if (not defined ($outputFirst)) {$outputFirst="First.vcf"}; 
 if (not defined ($outputRndm)) {$outputRndm="Random,vcf"}; 
