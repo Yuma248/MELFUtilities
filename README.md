@@ -17,7 +17,7 @@ ExtSeq.pl
 Example:  
 ExtSeq.pl -inR /dDocent/reference.fasta -inV /dDocent/Filtered_SNPs.vcf -out myseq.fasta  
 
-## ExtracctBQFRLMRM  
+## ExtractBQFRLMRM  
 This script will extract the best quality SNP, first SNP, less missing data SNP and a random SNP per contig. It is usefull when SNPs were call de novo to reduce linkage, by selecting one SNP per contig.  
 
 Usage:  
