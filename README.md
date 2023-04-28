@@ -44,5 +44,5 @@ UploadFSY.sh
 &emsp;-n <item name, this is required if you are creating a new item, default NEW UPLOAD>  
 
 For example:  
-UploadFSY.sh -i /sanpper/genome/genomev2.fasta -u https://api.figshare.com/v2/account/articles/22707369/files -t 75050303931z87ab7c72038ab9eaf02d853766bd8f7cc695f390d5b9cdeda1fd230c462a7cb7c7a67ef7c507f27f3fde647c414565574d54609ef477874c4c19 
+UploadFSY.sh -i /sanpper/genome/genomev2.fasta -u https://api.figshare.com/v2/account/articles/22707369/files -t 75050303931z87ab7c72038ab9eaf02d853766bd8f7cc695f390d5b9cdeda1fd230c462a7cb7c7a67ef7c507f27f3fde647c4145667664533374d54609ef477874c4aa11 
 
