@@ -38,11 +38,11 @@ Usage:
 UpFigshare.sh  
 &emsp;-i \<path to input file\>  
 &emsp;-u \<URL of figshare account/project/item, required if you have specific project and item ready, default https://api.figshare.com/v2/account/articles\>  
-&emsp;-t \<Access token for the figsahre account\>  
-&emsp;-p \<project ID, this is required just if you require to upload in specific project\>  
-&emsp;-f \<item ID, this is required just if you need to upload in specific item\>  
-&emsp;-n \<item name, this is required if you are creating a new item and you want a specific name, default NEW UPLOAD\>  
+&emsp;-t \<Access token for the figshare account\>  
+&emsp;-p \<project ID, this is required just if you require to upload the file in specific project\>  
+&emsp;-f \<item ID, this is required just if you need to upload the file in specific item (folder)\>  
+&emsp;-n \<item name, this is required if you are creating a new item (folder) and you want a specific name, default NEW UPLOAD\>  
 
 For example:  
-UpFigshare.sh -i /sanpper/genome/genomev2.fasta -u https://api.figshare.com/v2/account/articles/22707369/files -t 75050303931z87ab7c72038ab9eaf02d853766bd8f7cc695f390d5b9cdeda1fd230c462a7cb7c7a67ef7c507f27f3fde647c4145667664533374d54609ef477874c4aa11 
+UpFigshare.sh -i /sanpper/genome/genomev2.fasta -u https://api.figshare.com/v2/account/articles/ -t 75050303931z87ab7c72038ab9eaf02d853766bd8f7cc695f390d5b9cdeda1fd230c462a7cb7c7a67ef7c507f27f3fde647c4145667664533374d54609ef477874c4aa11 -p 24892
 
