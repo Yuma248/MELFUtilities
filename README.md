@@ -35,7 +35,7 @@ ExtractBQFRLMRM.pl -inf /my/input.vcf -bq /my/bestSNP.vcf -frt /my/firstSNP.vcf 
 This script will upload a file to a figshare repository, it needs the whole path of the file to be uploaded, a URL from figshare, and a token to access the repository or project. If the file is not required to be uploaded in a specific project or item, you can use the general URL https://api.figshare.com/v2/account/articles. But if you need to put in a specific project or item you will require the ID for the project and/or item. If you already upload one file in the project an item, you can integrate the ID in the URL and add just /files at the end, see the example.  
 
 Usage:  
-UploadFSY.sh  
+UpFigshare.sh  
 &emsp;-i <path to input file>  
 &emsp;-u <URL of figshare account/project/item, required if you have specific project and item ready, default https://api.figshare.com/v2/account/articles>  
 &emsp;-t <Access token for the figsahre account>  
@@ -44,5 +44,5 @@ UploadFSY.sh
 &emsp;-n <item name, this is required if you are creating a new item, default NEW UPLOAD>  
 
 For example:  
-UploadFSY.sh -i /sanpper/genome/genomev2.fasta -u https://api.figshare.com/v2/account/articles/22707369/files -t 75050303931z87ab7c72038ab9eaf02d853766bd8f7cc695f390d5b9cdeda1fd230c462a7cb7c7a67ef7c507f27f3fde647c4145667664533374d54609ef477874c4aa11 
+UpFigshare.sh -i /sanpper/genome/genomev2.fasta -u https://api.figshare.com/v2/account/articles/22707369/files -t 75050303931z87ab7c72038ab9eaf02d853766bd8f7cc695f390d5b9cdeda1fd230c462a7cb7c7a67ef7c507f27f3fde647c4145667664533374d54609ef477874c4aa11 
 
