@@ -1,5 +1,5 @@
 # MELFUtilities
-Several script useful to analyses or explore genomic data
+Several script useful to analyse or explore genomic data
 
 # Download
 &nbsp;git clone https://github.com/Yuma248/MELFUtilities
