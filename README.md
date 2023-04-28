@@ -11,7 +11,7 @@ This scritp extracts sequences from a dDocent reference fasta file, according to
 Usage:  
 ExtSeq.pl  
 &emsp;-inR <path to reference file fron dDocent, with contig sequences>  
-&emsp;-inV <path to VCF file with SNP>  
+&emsp;-inV path to VCF file with SNP  
 &emsp;-out <output fasta file name>  
 
 Example:  
