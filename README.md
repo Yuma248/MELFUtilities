@@ -31,7 +31,7 @@ ExtractBQFRLMRM.pl
 For example:  
 ExtractBQFRLMRM.pl -inf /my/input.vcf -bq /my/bestSNP.vcf -frt /my/firstSNP.vcf -rndm /my/randomSNP.vcf -lm /my/lessmissingSNP.vcf  
 
-## UpFigshare.sh  
+## UpFigshare  
 This script will upload a file to a figshare repository, it needs the whole path of the file to be uploaded, a URL from figshare, and a token to access the repository or project. If the file is not required to be uploaded in a specific project or item, you can use the general URL https://api.figshare.com/v2/account/articles. But if you need to put in a specific project or item you will require the ID for the project and/or item. If you already upload one file in the project an item, you can integrate the ID in the URL and add just /files at the end, see the example.  
 
 Usage:  
