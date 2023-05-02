@@ -1,4 +1,6 @@
 #!/bin/bash
+# This script is based on the example provided by figshare https://docs.figshare.com/ with practical modificiation. 
+
 set -e
 while [[ $# -gt 0 ]]; do
     key="$1"
@@ -68,10 +70,10 @@ if echo "$BASE_URL" | grep -P -q -v  "files$"; then
 		# Create a new item
 		echo 'Creating a new item...'
 		if [ -z "$PROJECT_ID" ] ; then
-			RESPONSE=$(curl -s -f -d "{\"title\": \"$ITEM_NAME\"}" -H 'Authorization: token '$ACCESS_TOKEN -H 'Content-Type: application/json' -X POST "$BASE_URL")
+			RESPONSE=$(curl -s -f -d "{\"title\": \"$ITEM_NAME\"}" -H 'Authorization: token '$ACCESS_TOKEN -H 'Content-Type: application/json' -X POST "$BASE_URL") || { echo "Error: Creating new item failed, check that your URL and your token are correct"; exit 1; }
 		else
 			BASE_URL="https://api.figshare.com/v2/account/projects/${PROJECT_ID}/articles"
-			RESPONSE=$(curl -s -f -d "{\"title\": \"$ITEM_NAME\"}" -H 'Authorization: token '$ACCESS_TOKEN -H 'Content-Type: application/json' -X POST "$BASE_URL")
+			RESPONSE=$(curl -s -f -d "{\"title\": \"$ITEM_NAME\"}" -H 'Authorization: token '$ACCESS_TOKEN -H 'Content-Type: application/json' -X POST "$BASE_URL") || { echo "Error: Creating new item failed, check that your URL, your token and your project ID are correct"; exit 1; }
 			#echo "The location of the created item is "$RESPONSE
 		fi
 		echo ''
@@ -87,7 +89,7 @@ fi
 
 # Initiate new upload:
 echo 'A new upload had been initiated...'
-RESPONSE=$(curl -s -f -d '{"md5": "'${MD5}'", "name": "'${FILE_NAME}'", "size": '${FILE_SIZE}'}' -H 'Content-Type: application/json' -H 'Authorization: token '$ACCESS_TOKEN -X POST "$BASE_URL")
+RESPONSE=$(curl -s -f -d '{"md5": "'${MD5}'", "name": "'${FILE_NAME}'", "size": '${FILE_SIZE}'}' -H 'Content-Type: application/json' -H 'Authorization: token '$ACCESS_TOKEN -X POST "$BASE_URL") || { echo "Error: Creating new file failed, check that your URL and token are correct"; exit 1; }
 #echo $RESPONSE
 echo ''
 
@@ -142,7 +144,7 @@ echo ''
 
 # Complete upload
 echo 'Completing the file upload...'
-RESPONSE=$(curl -s -f -H 'Authorization: token '$ACCESS_TOKEN -X POST "$BASE_URL/$ITEM_ID/files/$FILE_ID")
+RESPONSE=$(curl -s -f -H 'Authorization: token '$ACCESS_TOKEN -X POST "$BASE_URL/$ITEM_ID/files/$FILE_ID") || { echo "Error: Uploading file failed, check that your URL and token are correct"; exit 1; }
 echo 'Done!'
 echo ''
 
