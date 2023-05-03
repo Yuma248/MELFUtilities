@@ -144,7 +144,7 @@ echo ''
 
 # Complete upload
 echo 'Completing the file upload...'
-RESPONSE=$(curl -s -f -H 'Authorization: token '$ACCESS_TOKEN -X POST "$BASE_URL/$ITEM_ID/files/$FILE_ID") || { echo "Error: Uploading file failed, check that your URL and token are correct"; exit 1; }
+RESPONSE=$(curl -s -f -H 'Authorization: token '$ACCESS_TOKEN -X POST "$BASE_URL/$FILE_ID") || { echo "Error: Uploading file failed, check that your URL and token are correct"; exit 1; }
 echo 'Done!'
 echo ''
 
