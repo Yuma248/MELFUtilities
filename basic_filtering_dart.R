@@ -1,3 +1,29 @@
+##This scrip does basic filtering of dart data and create a table with filtering steps, basis statistic, Fst heat map, PCA plot and Admixture/Structure plot.
+#' @name basic_filter
+#' @rdname basic_filter
+#' This function does basic filtering of dart SNPs.
+#'
+#' @param dartD DArT genotype file.
+#' @param name prefix for output files (string).
+#' @param maxmisi maximum proportion of missing data per individual.
+#' @param mincalL minimum call rate per locus, inverse of maximum missing data por locus.
+#' @param minrep minimum reproducibility.
+#' @param minmaf minimum minor allele frequency.
+#' @param maxsim max reletedness to remove duplicates.
+#' @param secd remove secundaries.
+#' @param depthr min and maximum depth of coverage.
+#' @param HW filter for HWE.
+#' @param npopsHE Maximum number of population where a locus can be out of HWE.
+#' @param PDFplots If you want to create a PDF with basic results (filter steps table, diversity table, Fst heat map, PCA, Q plot).
+#' @param nK maximum number of pop to test with cluster algorithm.
+#' @return A description of the return value.
+#' @examples
+#' basic_filter(dartD, "Yuma", maxmisi = 50, mincalL = 0.80, mincalI = 0.50, minrep = 0.99, minmaf = 0.01, secd = TRUE, HWEF = TRUE, depthr = c(5,100), npopsHE = 2, maxsim = 0.8, PDFplots = TRUE, nK = 3)
+
+
+
+
+
 basic_filter <- function(dartD, name, maxmisi = 50, mincalL = 0.80, mincalI = 0.50, minrep = 0.99, minmaf = 0.01, secd = TRUE, HWEF = TRUE, depthr = c(5,100), npopsHE = 2, maxsim = 0.8, PDFplots = TRUE, nK = 3) {
     # dartD    - DArT genotype file 
     # name  - prefix for output files (string)
@@ -53,6 +79,20 @@ basic_filter <- function(dartD, name, maxmisi = 50, mincalL = 0.80, mincalI = 0.
 		cat(paste0("There are ", length(dup$ind2rem), " possible duplicates with > ", maxsim, " relatedness\n"))
 		return (dup)
 	}
+	Qvsnmf<-function(project,dartDin ){
+		myselK<-which.min(summary(project)$crossEntropy[2,])
+		bestR <- which.min(cross.entropy(project, K = myselK))
+		myorder <- order(dartDin$pop)
+		mynamesort <- dartDin$ind.names[order(dartDin$pop)]
+		mypopsort<- dartDin$pop[order(dartDin$pop)]
+		myQv <- read.table(paste0(getwd(),"/dartD09.snmf/K",as.character(myselK),"/run",as.character(bestR),"/dartD09_r",as.character(bestR),".",as.character(myselK),".Q"))[myorder,]
+		rownames(myQv)<-mynamesort
+		myQv <- cbind(myQv,mypopsort)
+		myQvmelte <- melt(rownames_to_column(myQv, "Ind"), value.name="Q")
+		colnames(myQvmelte)[c(2,3)]<-c("Loc","Clusters")
+		myQvmelte$Loc<-factor(myQvmelte$Loc, levels = levels(dartDin$pop))
+		return(myQvmelte)
+	}
 	basic_filter_plots<-function(fresults,pref){
 		FSY<-ggtexttable(fresults$filstpstab)
 		DIVY<-ggtexttable(fresults$basdiv)
@@ -69,14 +109,21 @@ basic_filter <- function(dartD, name, maxmisi = 50, mincalL = 0.80, mincalI = 0.
 		PCAY<-ggplot(fresults$PCA$li, aes(x=Axis1, y=Axis2, shape=fresults$dartD09.gi$pop, color=fresults$dartD09.gi$pop))+
 			geom_point(size = 4, alpha=0.5)+
 			theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(),
-			axis.line.x = element_line(color="black", size = 2),axis.line.y = element_line(color="black", size = 2))+
+			axis.line.x = element_line(color="black"),axis.line.y = element_line(color="black"))+
 			xlab(paste0("PC1 (",round((fresults$PCA$eig[1]/sum(fresults$PCA$eig)*100),2),"%)"))+
 			ylab(paste0("PC2 (",round((fresults$PCA$eig[2]/sum(fresults$PCA$eig)*100),2),"%)"))+
 			scale_color_discrete("") +
-			scale_shape_manual("",values = rep(c(15, 17,19),5)) +
+			scale_shape_manual("",values = rep(c(15, 17,19),20)) +
 			labs(color = "Pops")
-		pdf(paste0(pref,"_basicplot.pdf"), width = 12, height = 12)
-		grid.arrange(FSY,DIVY,hmY, PCAY, ncol = 2, nrow =2, widths = c(0.1, 0.1), heights = c(0.1, 0.1))
+		QPLOT<-ggplot(fresults$Q, aes(x = Ind, y = Q, fill = Clusters)) + geom_bar(stat = "identity", width = 1) + 
+			scale_y_continuous(expand = c(0, 0)) +
+			facet_grid(. ~ Loc, scales = "free_x", space = "free_x")+
+			theme(legend.position = "none",axis.text.x=element_blank(), 
+			axis.title.x=element_blank(),axis.ticks.x=element_blank(), panel.spacing.x = unit(0, "lines"), 
+			panel.border = element_rect(color = "black", fill = NA), plot.margin = margin(0, 0.2, 0.2, 0, "cm"))
+		pdf(paste0(pref,"_basicplot.pdf"), width = 12, height = 16)
+		grid.arrange(FSY,DIVY,hmY, PCAY, QPLOT, ncol = 2, nrow = 3, layout_matrix = rbind(c(1,2), c(3,4), c(5,5)), 
+			widths = c(0.01, 0.01), heights = c(0.01, 0.01, 0.01))
 		dev.off()
 	}
 	dart.gi <- gl2gi(dartD)
@@ -138,7 +185,7 @@ basic_filter <- function(dartD, name, maxmisi = 50, mincalL = 0.80, mincalI = 0.
 	my_results$dartD09 <- dartD09
 	my_results$dartD09.gi <- gl2gi(dartD09)
 	my_results$pophet <- gl.report.heterozygosity(dartD09)
-	my_results$popdiv <- gl.report.diversity(dartD09)
+#	my_results$popdiv <- gl.report.diversity(dartD09)
 	my_results$popfst <- gl.fst.pop(dartD09)
 #	my_results$popGD <-gl.dist.pop(dartD09)
 #	my_results$PCoA <- gl.pcoa(dartD09,4)
@@ -150,13 +197,11 @@ basic_filter <- function(dartD, name, maxmisi = 50, mincalL = 0.80, mincalI = 0.
 	my_results$basdiv[c("nLoc","polyLoc")]<-format(my_results$basdiv[c("nLoc","polyLoc")],big.mark=",",scientific=FALSE)
 	my_results$fst4hm <- fst.heatmap(my_results$popfst$Fst, levels(dartD$pop))
 	gl2geno(dartD09, outfile = "dartD09", outpath = getwd())
-#	my_results$snmfR <- snmf("dartD09.geno",K = 1:nK, CPU=10, entropy = TRUE, project = "new", repetitions = 3)
-#	myselK<-which.min(summary(my_results$snmfR)$crossEntropy[2,])
-#	bestR = which.min(cross.entropy(my_results$snmfR, K = myselK))
+	my_results$snmfR <- snmf("dartD09.geno",K = 1:nK, CPU=10, entropy = TRUE, project = "new", repetitions = 3)
+	my_results$Q <- Qvsnmf(my_results$snmfR, my_results$dartD09)
 	saveRDS(my_results, file=paste0(name, "_basicfilters.Rdata"))
 	if (PDFplots){
 		basic_filter_plots(my_results, name)
 	}
 	return(my_results)
 }
-
