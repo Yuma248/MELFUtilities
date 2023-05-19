@@ -46,3 +46,53 @@ UpFigshare.sh
 For example:  
 UpFigshare.sh -i /sanpper/genome/genomev2.fasta -u https://api.figshare.com/v2/account/articles/ -t 75050303931z87ab7c72038ab9eaf02d853766bd8f7cc695f390d5b9cdeda1fd230c462a7cb7c7a67ef7c507f27f3fde647c4145667664533374d54609ef477874c4aa11 -p 24892
 
+## basic_filtering_dart
+This script performs basic filtering on a dart CSV file and output a table with the remaining SNPs after each filtering step, the basic stats (#samples, #loc. #polymorphic loc, observerd heterozygozity, espected heterozygozity, and Fis inbreeding coefficient) after filtering, a FST plot, a PCA plot and a Admixture/Structure plot.   
+
+To use this fuction in R you will need the to install and load the next R libraries:
+ 
+library(dartR)  
+library(tidyverse)  
+library(vegan)  
+library(related)  
+library(igraph)  
+library(reshape2)  
+library(ggplot2)  
+library(HardyWeinberg)  
+library(ggpubr)  
+library(gridExtra)  
+library(LEA)  
+  
+And either copy and save the fuction in R or use the command  
+  
+source("path/to/MELFUtilties/basicfilteringdart.R")  
+  
+Usage:  
+basic_filter(dartData, "output prefix", maxmisi = 50, mincalL = 0.80, minrep = 0.99, minmaf = 0.03, secd = TRUE, HWEF = TRUE, depthr = c(5,75), npopsHE = 5, maxsim = 0.85, PDFplots = TRUE)  
+&emsp;dartD    - DArT genotype file    
+&emsp;name  - prefix for output files (string)  
+&emsp;maxmisi  - maximum proportion of missing data per individual   
+&emsp;mincalL  - minimum call rate per locus, inverse of maximum missing data por locus  
+&emsp;minrep  - minimum reproducibility   
+&emsp;minmaf  - minimum minor allele frequency  
+&emsp;maxsim  - max reletedness to remove duplicates  
+&emsp;secd  - remove secundaries (TRUE, FALSE)  
+&emsp;depthr  - min and maximum depth of coverage  
+&emsp;HW  - filter for HWE (TRUE, FALSE)  
+&emsp;npopsHE  - Maximum number of population where a locus can be out of HWE  
+&emsp;PDFplots  - If you want to create a PDF with basic results (filter steps table, diversity table, Fst heat map, PCA)   
+
+
+Example:   
+filterdata <- basic_filter(YumadartData, "Yuma", maxmisi = 50, mincalL = 0.80, minrep = 0.99, minmaf = 0.03, secd = TRUE, HWEF = TRUE, depthr = c(5,75), npopsHE = 5, maxsim = 0.85, PDFplots = TRUE)
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
