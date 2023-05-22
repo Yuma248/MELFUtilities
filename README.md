@@ -65,7 +65,7 @@ library(LEA)
   
 And either copy and save the fuction in R or use the command  
   
-source("path/to/MELFUtilties/basicfilteringdart.R")  
+source("path/to/MELFUtilties/basic_filtering_dart.R")  
   
 Usage:  
 basic_filter(dartData, "output prefix", maxmisi = 50, mincalL = 0.80, minrep = 0.99, minmaf = 0.03, secd = TRUE, HWEF = TRUE, depthr = c(5,75), npopsHE = 5, maxsim = 0.85, PDFplots = TRUE)  
