@@ -85,7 +85,11 @@ basic_filter <- function(dartD, name, maxmisi = 50, mincalL = 0.80, mincalI = 0.
 		myorder <- order(dartDin$pop)
 		mynamesort <- dartDin$ind.names[order(dartDin$pop)]
 		mypopsort<- dartDin$pop[order(dartDin$pop)]
-		myQv <- read.table(paste0(getwd(),"/dartD09.snmf/K",as.character(myselK),"/run",as.character(bestR),"/dartD09_r",as.character(bestR),".",as.character(myselK),".Q"))[myorder,]
+		if (myselK > 1){
+			myQv<-read.table(paste0(getwd(),"/dartD09.snmf/K",as.character(myselK),"/run",as.character(bestR),"/dartD09_r",as.character(bestR),".",as.character(myselK),".Q"))[myorder,]
+		} else {
+			myQv<-read.table(paste0(getwd(),"/dartD09.snmf/K",as.character(myselK),"/run",as.character(bestR),"/dartD09_r",as.character(bestR),".",as.character(myselK),".Q"))
+		}
 		rownames(myQv)<-mynamesort
 		myQv <- cbind(myQv,mypopsort)
 		myQvmelte <- melt(rownames_to_column(myQv, "Ind"), value.name="Q")
