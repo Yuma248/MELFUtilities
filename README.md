@@ -66,7 +66,14 @@ library(LEA)
 And either copy and save the fuction in R or use the command  
   
 source("path/to/MELFUtilties/basic_filtering_dart.R")  
-  
+
+
+You will have to upload your dart data and samples metadata (sample pop map or pop info file) in R, using commands like: 
+
+dartData <- gl.read.dart(filename="Report_Sps0000_SNP_mapping.csv",ind.metafile="SamplesAllMetadata.csv")
+meta <- read.csv("SamplesAllMetadata.csv", header=TRUE)
+
+ 
 Usage:  
 basic_filter(dartData, "output prefix", maxmisi = 50, mincalL = 0.80, minrep = 0.99, minmaf = 0.03, secd = TRUE, HWEF = TRUE, depthr = c(5,75), npopsHE = 5, maxsim = 0.85, PDFplots = TRUE)  
 &emsp;dartD    - DArT genotype file    
