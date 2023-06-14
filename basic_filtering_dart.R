@@ -132,7 +132,11 @@ basic_filter <- function(dartD, name, maxmisi = 50, mincalL = 0.80, mincalI = 0.
 	}
 	dart.gi <- gl2gi(dartD)
 	my_results$mdin <- ind.missing(dart.gi, maxmisi)
-	dartD01 <- gl.drop.ind(dartD,ind.list = my_results$mdin$hmi,recalc = TRUE)
+	if (length(my_results$mdin$hmi)> 0){
+		dartD01 <- gl.drop.ind(dartD,ind.list = my_results$mdin$hmi,recalc = TRUE)
+	} else {
+		dartD01 <-dartD
+	}
 	my_results$dartD01 <- dartD01
 	my_results$filstpstab <- data.frame(SNPs = nLoc(dartD01))
 	rownames(my_results$filstpstab)[nrow(my_results$filstpstab)] <- paste0("Dart raw SNPs")
@@ -185,7 +189,11 @@ basic_filter <- function(dartD, name, maxmisi = 50, mincalL = 0.80, mincalI = 0.
 	my_results$dartD08.rel <- gl2related(dartD08, save = FALSE)
 	my_results$relest <- coancestry(my_results$dartD08.rel, wang =1)
 	my_results$duplic <- ind.dup(my_results$relest$relatedness, maxsim, my_results$mdinD08$missingdata)
-	dartD09 <- gl.filter.monomorphs(gl.drop.ind(dartD08,ind.list = my_results$duplic$ind2rem,recalc = TRUE))
+	if (length(my_results$duplic$ind2rem)> 0){
+		dartD09 <- gl.filter.monomorphs(gl.drop.ind(dartD08,ind.list = my_results$duplic$ind2rem,recalc = TRUE))
+	} else {
+		dartD09 <-dartD08
+	}
 	my_results$dartD09 <- dartD09
 	my_results$dartD09.gi <- gl2gi(dartD09)
 	my_results$pophet <- gl.report.heterozygosity(dartD09)
