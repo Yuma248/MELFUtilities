@@ -4,14 +4,17 @@ import xarray as xr
 import s3fs
 import pandas as pd
 import time
+import argparse
 from joblib import Parallel, delayed
 from netCDF4 import Dataset as NetCDFFile 
 import matplotlib.pyplot as plt
 import numpy as np
+import rioxarray as rio
+
 
 parser = argparse.ArgumentParser(description='This script will download data from IMOS and make monthly average per year and per a determine period (e.g. 2012-2022) ',epilog=("Example: python ./IMOnetCDF.py -i \"imos-data/IMOS/SRS/OC/gridded/aqua/P1D/\" -l1 -19 -l2 -40 -n1 113 -n2 160 -t1 2002 -t2 2022 -o myaverages/"))
 parser.add_argument("-i","--imos", type=str,help="Input imos http folder to extract files.For example imos-data/IMOS/SRS/OC/gridded/aqua/P1D/")
-parser.add_argument("-o","--outfolder", type=str, default="IMOS_out", help="Output folder to save all the average to be download, default IMOS_out")
+parser.add_argument("-o","--outf", type=str, default="IMOS_out", help="Output folder to save all the average to be download, default IMOS_out")
 parser.add_argument("-l1", "--lat1", type=int, default=10, help="Northern latitude, default 10, which is the northern latitude in IMOS P1D data")
 parser.add_argument("-l2", "--lat2", type=int, default=-60, help="Southern latitude, default -60, which is the southern latitude in IMOS P1D data")
 parser.add_argument("-n1", "--lon1", type=int, default=80, help="Western longitude, default 80, which is the western longitude in IMOS P1D data")
@@ -25,6 +28,10 @@ args = parser.parse_args()
 
 if args.imos :
     s3_data_dir =args.imos
+    if fs.exists(s3_data_dir):
+    else:
+        parser.error("Input path does not exist, check http://data.aodn.org.au/?prefix=IMOS/SRS/OC/ to see all the path options. Run script with -h option to check each argument.")
+    outputfolder = args.outf
     lat_1 = int(args.lat1)
     lat_2 = int(args.lat2)
     lon_1 = int(args.lon1)
