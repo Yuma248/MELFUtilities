@@ -86,17 +86,27 @@ for y in range(tim_1,tim_2):
         for i in data_file_MY_OC3:
             paths_MY_CO3.append(os.path.join(s3_data_dirYM, i).replace("\\","/"))
         ourfiles[str(m)+str(y)].extend(paths_MY_CO3)
-
-
-
-
-
-for my in (ourfiles.keys()):
-    if ourfiles[my] != []:
-        myaverages[my] = []
-        ds_multi = xr.open_mfdataset([fs.open(i) for i in ourfiles[my]], engine='h5netcdf', combine='by_coords')
+        myaverages[str(m)+str(y)] = []
+        ds_multi = xr.open_mfdataset([fs.open(i) for i in ourfiles[str(m)+str(y)]], engine='h5netcdf', combine='by_coords')
         ds_slice = ds_multi.sel(latitude=lat_slice, longitude=lon_slice)
-        myaverages[my] = ds_slice.mean(dim='time')
+        myaverages[str(m)+str(y)] = ds_slice.mean(dim='time')
+        #myaverages[my].to_netcdf(path=, engine='h5netcdf')
+        mysave=myaverages[str(m)+str(y)]['chl_oc3']
+        mysave.rio.set_spatial_dims('longitude', 'latitude')
+        mysave.rio.set_crs("WGS84")
+        savpath = os.path.join(outputy, str(m)+".tiff").replace("\\","/")
+        mysave.rio.to_raster(r"savpath")
+
+
+
+
+
+#for my in (ourfiles.keys()):
+#    if ourfiles[my] != []:
+#        myaverages[my] = []
+#        ds_multi = xr.open_mfdataset([fs.open(i) for i in ourfiles[my]], engine='h5netcdf', combine='by_coords')
+#        ds_slice = ds_multi.sel(latitude=lat_slice, longitude=lon_slice)
+#        myaverages[my] = ds_slice.mean(dim='time')
 
 
 
@@ -106,6 +116,26 @@ for mn in range(mon_1,mon_2):
         matarrays = [myaverages[my] for my in myaverages.keys() if my.startswith(mn)]
         moutfilesC = xr.concat(matarrays, dim="time")
         maverages[mn] = moutfilesC.mean(dim='time')
+        savpath = os.path.join(outputy, str(mn)+"_Ave.tiff").replace("\\","/")
+        mysave=maverages[mn]['chl_oc3']
+        mysave.rio.set_spatial_dims('longitude', 'latitude')
+        mysave.rio.set_crs("WGS84")
+        mysave.rio.to_raster(r"savpath")
         mstds[mn] = moutfilesC.std(dim='time')
+        savpath = os.path.join(outputy, str(mn)+"_SD.tiff").replace("\\","/")
+        mysave=mstds[mn]['chl_oc3']
+        mysave.rio.set_spatial_dims('longitude', 'latitude')
+        mysave.rio.set_crs("WGS84")
+        mysave.rio.to_raster(r"savpath")
         mmax[mn] = moutfilesC.max(dim='time')
+        savpath = os.path.join(outputy, str(mn)+"_MAX.tiff").replace("\\","/")
+        mysave=mmax[mn]['chl_oc3']
+        mysave.rio.set_spatial_dims('longitude', 'latitude')
+        mysave.rio.set_crs("WGS84")
+        mysave.rio.to_raster(r"savpath")
         mmin[mn] = moutfilesC.min(dim='time')
+        savpath = os.path.join(outputy, str(mn)+"_MIN.tiff").replace("\\","/")
+        mysave=mmax[mn]['chl_oc3']
+        mysave.rio.set_spatial_dims('longitude', 'latitude')
+        mysave.rio.set_crs("WGS84")
+        mysave.rio.to_raster(r"savpath")
