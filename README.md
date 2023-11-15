@@ -70,7 +70,7 @@ source("path/to/MELFUtilties/basic_filtering_dart.R")
 
 You will have to upload your dart data and samples metadata (sample pop map or pop info file) in R, using commands like: 
 
-dartData <- gl.read.dart(filename="Report_Sps0000_SNP_mapping.csv",ind.metafile="SamplesAllMetadata.csv")
+dartData <- gl.read.dart(filename="Report_Sps0000_SNP_mapping.csv",ind.metafile="SamplesAllMetadata.csv") 
 
 meta <- read.csv("SamplesAllMetadata.csv", header=TRUE)
 
