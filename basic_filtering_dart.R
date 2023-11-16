@@ -50,8 +50,11 @@ basic_filter <- function(dartD, name, maxmisi = 50, mincalL = 0.80, mincalI = 0.
 	}
 	fst.heatmap <- function(fstmat,order_list) {
 		Fst_mat<- fstmat
-		Fst_mat[upper.tri(Fst_mat)]<-Fst_mat[lower.tri(Fst_mat)]
 		diag(Fst_mat)[is.na(diag(Fst_mat))] <- 0
+                Fst_mat_T<-t(Fst_mat)
+                Fst_mat[upper.tri(Fst_mat)]<-  Fst_mat_T[upper.tri(Fst_mat_T)]
+		##Fst_mat[upper.tri(Fst_mat)]<-Fst_mat[lower.tri(Fst_mat)]
+		##diag(Fst_mat)[is.na(diag(Fst_mat))] <- 0
 		melted_cormat <- melt(Fst_mat, na.rm = TRUE)
 		melted_cormat$Var1<-factor(melted_cormat$Var1, levels = order_list )
 		melted_cormat$Var2<-factor(melted_cormat$Var2, levels = order_list )
